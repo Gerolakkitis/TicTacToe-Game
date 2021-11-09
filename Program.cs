@@ -11,24 +11,18 @@ namespace TicTacToeGame
         {
             int player1Score = 0;
             int player2Score = 0;
-            int gameRound = 0;
+            int gameRound = 1;
             int playerNumTurn = 1;
             int playerNum;
 
             //Start the game and continue until user enters 'q'. Keep track of player score
             while (true)
             {
-                if (gameRound == 0)
+                if (gameRound == 1)
                 {
                     Console.WriteLine("Welcome to TIC TAC TOE GAME ");
                 }
-                else
-                {
-                    Console.WriteLine("GAME ROUND: {0}", gameRound);
-                    Console.WriteLine("Player 1 score is {0}", player1Score);
-                    Console.WriteLine("Player 2 score is {0}", player2Score);
-                }
-
+                Console.WriteLine("GAME ROUND: {0}", gameRound);
                 DisplayTicTacTocArray();
 
                 //Rotate which player starts first
@@ -70,6 +64,8 @@ namespace TicTacToeGame
                         break;
                     }
                 }
+                Console.WriteLine("\nPlayer 1 score is {0}", player1Score);
+                Console.WriteLine("Player 2 score is {0}\n", player2Score);
 
                 Console.WriteLine("\nPress any key to play again. \nPress 'q' to quit\n");
                 if (Console.ReadKey().Key == ConsoleKey.Q)
@@ -86,6 +82,8 @@ namespace TicTacToeGame
 
                 //empty user Input Tracker list
                 userInputTracker.Clear();
+
+
 
 
             }
