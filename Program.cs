@@ -33,7 +33,8 @@ namespace TicTacToeGame
             int player1Score = 0;
             int player2Score = 0;
             int gameRound = 0;
-            int playerNumTurn = 2; 
+            int playerNumTurn = 1;
+            int playerNum;
 
             //Start the game and continue until user enters 'q'. Keep track of player score
             while (true)
@@ -48,18 +49,19 @@ namespace TicTacToeGame
                     Console.WriteLine("Player 1 score is {0}", player1Score);
                     Console.WriteLine("Player 2 score is {0}", player2Score);
                 }
-                
+
 
                 DisplayTicTacTocArray();
 
                 //At the end of the game rotate which player starts first
-                //if (playerNumTurn == 2)
+                playerNum = UpdadeStartPlayerTurn(playerNumTurn);
+                //if (playerNumTurn == 1)
                 //{
-                //    playerNumTurn = 1;
+                //    playerNum = 1;
                 //}
                 //else
                 //{
-                //    playerNumTurn = 2;
+                //    playerNum = 2;
                 //}
 
 
@@ -68,9 +70,8 @@ namespace TicTacToeGame
                 {
                     bool win = false;
                     int validPlayerInput;
-                    int playerNum;
-                    playerNum = 1;
 
+                    playerNum = UpdadeStartPlayerTurn(playerNum);
 
                     validPlayerInput = GetUserInput(playerNum);
 
@@ -82,26 +83,26 @@ namespace TicTacToeGame
                     if (win)
                     {
                         Console.WriteLine("CONGRATULATIONS\nPlayer{0} has won! ", playerNum);
-                        player1Score++;
+                        //increase winner's score
+                        if (playerNum == 1)
+                        {
+                            player1Score++;
+                        }
+                        else
+                        {
+                            player2Score++;
+                        }
+                        gameRound++;
                         break;
                     }
 
-                    playerNum = 2;
-                    validPlayerInput = GetUserInput(playerNum);
-
-                    UpdateArray(validPlayerInput, playerNum);
-
-                    Console.Clear();
-                    DisplayTicTacTocArray();
-                    win = CheckIfWinner(playerNum);
-                    if (win)
+                    //if all fields are field and no match, there is no winner for that round
+                    if (userInputTracker.Count == 9)
                     {
-                        player2Score++;
-                        Console.WriteLine("CONGRATULATIONS\nPlayer{0} has won! ", playerNum);
+                        Console.WriteLine("No winner");
                         break;
                     }
                 }
-
 
                 Console.WriteLine("\nPress any key to play again. \nPress 'q' to quit\n");
                 if (Console.ReadKey().Key == ConsoleKey.Q)
@@ -109,8 +110,17 @@ namespace TicTacToeGame
                     break;
                 }
                 Console.Clear();
+
+
+                playerNumTurn = UpdadeStartPlayerTurn(playerNumTurn);
+
+                //Remove X and O from Display
                 ResetTicTacTokDisplay();
-                gameRound++;
+
+                //empty user Input Tracker list
+                userInputTracker.Clear();
+
+
             }
         }
 
@@ -129,17 +139,30 @@ namespace TicTacToeGame
             return validPlayerInput;
         }
 
+        static int UpdadeStartPlayerTurn(int startPlayerTurn)
+        {
+            if (startPlayerTurn == 2)
+            {
+                return 1;
+            }
+            else
+            {
+                return 2;
+            }
+        }
+
+
         static void ResetTicTacTokDisplay()
         {
             int count = 1;
-            for (int i=0; i< ticTacToc2DArray.GetLength(0); i++)
+            for (int i = 0; i < ticTacToc2DArray.GetLength(0); i++)
             {
                 for (int j = 0; j < ticTacToc2DArray.GetLength(1); j++)
                 {
                     ticTacToc2DArray[i, j] = count.ToString();
                     count++;
                 }
-                
+
             }
         }
 
