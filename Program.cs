@@ -6,27 +6,6 @@ namespace TicTacToeGame
 {
     class Program
     {
-        //       |       |
-        //   1   |   2   |   3
-        //_______|_______|_______   
-        //       |       |
-        //   4   |   5   |   6 
-        //_______|_______|_______
-        //       |       |
-        //   7   |   8   |   9
-        //       |       |
-
-        //Player 1: Choose your field!
-        //Incorrect input! Please use another field!
-        //Player 2 has won!
-        //Press any Key to Reset the Game
-
-
-
-
-
-
-
 
         static void Main(string[] args)
         {
@@ -50,20 +29,10 @@ namespace TicTacToeGame
                     Console.WriteLine("Player 2 score is {0}", player2Score);
                 }
 
-
                 DisplayTicTacTocArray();
 
-                //At the end of the game rotate which player starts first
+                //Rotate which player starts first
                 playerNum = UpdadeStartPlayerTurn(playerNumTurn);
-                //if (playerNumTurn == 1)
-                //{
-                //    playerNum = 1;
-                //}
-                //else
-                //{
-                //    playerNum = 2;
-                //}
-
 
                 //While loop for individual game
                 while (true)
@@ -71,15 +40,13 @@ namespace TicTacToeGame
                     bool win = false;
                     int validPlayerInput;
 
-                    playerNum = UpdadeStartPlayerTurn(playerNum);
+                    playerNum = UpdadeStartPlayerTurn(playerNum); //rotate turns of player
+                    validPlayerInput = GetUserInput(playerNum); //check if input is valid
+                    UpdateArray(validPlayerInput, playerNum); //update display
+                    Console.Clear(); 
+                    DisplayTicTacTocArray(); //show updated array
 
-                    validPlayerInput = GetUserInput(playerNum);
-
-                    UpdateArray(validPlayerInput, playerNum);
-
-                    Console.Clear();
-                    DisplayTicTacTocArray();
-                    win = CheckIfWinner(playerNum);
+                    win = CheckIfWinner(playerNum); 
                     if (win)
                     {
                         Console.WriteLine("CONGRATULATIONS\nPlayer{0} has won! ", playerNum);
@@ -99,7 +66,7 @@ namespace TicTacToeGame
                     //if all fields are field and no match, there is no winner for that round
                     if (userInputTracker.Count == 9)
                     {
-                        Console.WriteLine("No winner");
+                        Console.WriteLine("No winner. Repeating this round!");
                         break;
                     }
                 }
@@ -111,7 +78,7 @@ namespace TicTacToeGame
                 }
                 Console.Clear();
 
-
+                //update playerNumTurn to update the loop at which player starts first
                 playerNumTurn = UpdadeStartPlayerTurn(playerNumTurn);
 
                 //Remove X and O from Display
@@ -124,12 +91,16 @@ namespace TicTacToeGame
             }
         }
 
+        //initialize 2D array
         static string[,] ticTacToc2DArray =
         {
             {"1","2","3"},
             {"4", "5", "6"},
             {"7", "8", "9"}
         };
+
+
+        //Get user input and call method to verify valid input
         static int GetUserInput(int playerNum)
         {
             string playerInput;
@@ -139,6 +110,8 @@ namespace TicTacToeGame
             return validPlayerInput;
         }
 
+
+        //method that helps rotate player on each game and each round
         static int UpdadeStartPlayerTurn(int startPlayerTurn)
         {
             if (startPlayerTurn == 2)
@@ -151,7 +124,7 @@ namespace TicTacToeGame
             }
         }
 
-
+        //reset display at the end of the game
         static void ResetTicTacTokDisplay()
         {
             int count = 1;
@@ -166,6 +139,7 @@ namespace TicTacToeGame
             }
         }
 
+        //make global list to keep track of user input
         static List<int> userInputTracker = new List<int>();
         //update the 2Dimensional array with the user's input
         static void UpdateArray(int playerInput, int playerNum)
@@ -187,8 +161,8 @@ namespace TicTacToeGame
             switch (playerInput)
             {
                 case 1:
-                    ticTacToc2DArray[0, 0] = letter;
-                    userInputTracker.Add(1);
+                    ticTacToc2DArray[0, 0] = letter; //Assign X or O 
+                    userInputTracker.Add(1); //add to a list if user chose 1 to avoid repeats. Checks in other method if a repeat.
                     break;
                 case 2:
                     ticTacToc2DArray[0, 1] = letter;
@@ -225,6 +199,8 @@ namespace TicTacToeGame
             }
         }
 
+
+        //Check all possible ways a player is a winner
         static bool CheckIfWinner(int playerNum)
         {
             string letter = GetPlayerSymbol(playerNum);
@@ -267,6 +243,7 @@ namespace TicTacToeGame
 
         }
 
+        //Based on player turn change symbol to O or X to match player
         static string GetPlayerSymbol(int playerNum)
         {
             string symbol;
@@ -282,6 +259,8 @@ namespace TicTacToeGame
 
         }
 
+
+        //Verify user input is digit, between 0 and 10
         static int CheckIfUserInputValid(string userInput)
         {
             int result;
@@ -323,7 +302,7 @@ namespace TicTacToeGame
 
 
 
-
+        //Display the game and add colors
         static void DisplayTicTacTocArray()
         {
             //check rows of 2D array
@@ -338,11 +317,11 @@ namespace TicTacToeGame
                 {
                     if (ticTacToc2DArray[i, j] == "X")
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.ForegroundColor = ConsoleColor.Red; //X is color Red
                     }
                     else if (ticTacToc2DArray[i, j] == "O")
                     {
-                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.ForegroundColor = ConsoleColor.Blue; //O is color Blue
                     }
 
                     Console.Write("   {0}   ", ticTacToc2DArray[i, j]);
